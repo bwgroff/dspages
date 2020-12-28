@@ -4,12 +4,29 @@ search_exclude: true
 image: images/logo.png
 ---
 
-This site is built with [fastpages](https://github.com/fastai/fastpages), An easy to use blogging platform with extra features for Jupyter Notebooks.
+# Julia
 
-![]({{site.baseurl}}/images/diagram.png "https://github.com/fastai/fastpages")
+I was introduced to Julia by Kelly Shen, an active member of the Julia community, fantastic data engineer and overall wonderful person. Since then, I've been consistently impressed and surprised at what's available within the young ecosystem and becoming convinced that Julia will have a seat at the table alongside Python and R as a premier scripting language for data science and analytics.
 
-[fastpages](https://github.com/fastai/fastpages) automates the process of creating blog posts via GitHub Actions, so you don't have to fuss with conversion scripts.  A full list of features can be found on [GitHub](https://github.com/fastai/fastpages).  
+Julia has some rough spots for newcomers, especially the slow import statements and first-run times for functions. Julia compiles functions as needed, and this is type-specific (so a function `foo(Int)` and `foo(Float)` might both need to be compiled when they're separately called, despite having the same name). There are ways around this (sometimes) including compiling your own system image (PackageCompiler.jl). That said, every subsequent invocation is _blazingly fast_. 
 
-You can edit the `index.html` file to change this content.
+My favorite examples are iterating on visualizations with e.g. Gadfly, and iterating on models with Turing. In both cases, iteration is a critical aspect of the workflow and here Julia excels. Rendering a new plot or sampling from a new model is much faster than e.g. ggplot or matplotlib, or stan (which must recompile (slowly) every model change before sampling). I don't do much pymc so can't say much about speed there. The reduction in friction is a huge improvement.
+
+Other than that, Julia has it's normal share of new syntax to grok and minor surprises to uncover. After a few weeks of doing a few minor tasks with it here and there, I'm very comfortable with it and find the language really wonderful.
+
+# So what's all this then?
+
+After stepping away from work at the end of the year to recover from some 2020-burnout and focus on my family a bit, I also wanted to get closer to some of the new tools of the trade in data science. A lot of amazing stuff has emerged over the past several years as my career has focused more on management. Now is my chance to spend some time digging in and renewing my connection to the technical details of the field.
+
+While I'm at it, I might a well write about what I'm doing! So, the areas I plan on focusing are:
+
+1. The basic tools for data science in Julia
+    1. CSV, HTTP, that sort of thing
+    2. Dataframes and DataframesMeta and so forth
+    3. Gadfly, Plots, yadda yadda etc
+3. Statistical modeling with Turing, Distributions, what have you
+4. Reinforcement learning and the like
+
+Note that this site is built with [fastpages](https://github.com/fastai/fastpages), which is amaze.
 
 # Posts
