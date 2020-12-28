@@ -2,10 +2,32 @@
   
     
         "post0": {
-            "title": "Hi!",
+            "title": "Some Julia DS basics",
             "content": "using Gadfly using DataFrames, DataFramesMeta using RDatasets . ┌ Info: Precompiling Gadfly [c91e804a-d5a3-530f-b6f0-dfbca275c004] └ @ Base loading.jl:1278 ┌ Info: Precompiling DataFramesMeta [1313f7d8-7da2-5740-9ea0-a2ca25f37964] └ @ Base loading.jl:1278 . Note that this takes .. a .. really .. long .. time. . iris = dataset(&quot;datasets&quot;, &quot;iris&quot;) . SepalLengthSepalWidthPetalLengthPetalWidthSpecies . Float64Float64Float64Float64Cat… . 150 rows × 5 columns . 15.1 | 3.5 | 1.4 | 0.2 | setosa | . 24.9 | 3.0 | 1.4 | 0.2 | setosa | . 34.7 | 3.2 | 1.3 | 0.2 | setosa | . 44.6 | 3.1 | 1.5 | 0.2 | setosa | . 55.0 | 3.6 | 1.4 | 0.2 | setosa | . 65.4 | 3.9 | 1.7 | 0.4 | setosa | . 74.6 | 3.4 | 1.4 | 0.3 | setosa | . 85.0 | 3.4 | 1.5 | 0.2 | setosa | . 94.4 | 2.9 | 1.4 | 0.2 | setosa | . 104.9 | 3.1 | 1.5 | 0.1 | setosa | . 115.4 | 3.7 | 1.5 | 0.2 | setosa | . 124.8 | 3.4 | 1.6 | 0.2 | setosa | . 134.8 | 3.0 | 1.4 | 0.1 | setosa | . 144.3 | 3.0 | 1.1 | 0.1 | setosa | . 155.8 | 4.0 | 1.2 | 0.2 | setosa | . 165.7 | 4.4 | 1.5 | 0.4 | setosa | . 175.4 | 3.9 | 1.3 | 0.4 | setosa | . 185.1 | 3.5 | 1.4 | 0.3 | setosa | . 195.7 | 3.8 | 1.7 | 0.3 | setosa | . 205.1 | 3.8 | 1.5 | 0.3 | setosa | . 215.4 | 3.4 | 1.7 | 0.2 | setosa | . 225.1 | 3.7 | 1.5 | 0.4 | setosa | . 234.6 | 3.6 | 1.0 | 0.2 | setosa | . 245.1 | 3.3 | 1.7 | 0.5 | setosa | . 254.8 | 3.4 | 1.9 | 0.2 | setosa | . 265.0 | 3.0 | 1.6 | 0.2 | setosa | . 275.0 | 3.4 | 1.6 | 0.4 | setosa | . 285.2 | 3.5 | 1.5 | 0.2 | setosa | . 295.2 | 3.4 | 1.4 | 0.2 | setosa | . 304.7 | 3.2 | 1.6 | 0.2 | setosa | . &vellip;&vellip; | &vellip; | &vellip; | &vellip; | &vellip; | . plot(iris, x=:SepalLength, y=:SepalWidth, color=:Species, Geom.point) . SepalLength -1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 2.2 2.4 2.6 2.8 3.0 3.2 3.4 3.6 3.8 4.0 4.2 4.4 4.6 4.8 5.0 5.2 5.4 5.6 5.8 6.0 6.2 6.4 6.6 6.8 7.0 7.2 7.4 7.6 7.8 8.0 8.2 8.4 8.6 8.8 9.0 9.2 9.4 9.6 9.8 10.0 10.2 10.4 10.6 10.8 11.0 11.2 11.4 11.6 11.8 12.0 0 5 10 15 0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5 9.0 9.5 10.0 10.5 11.0 11.5 12.0 setosa versicolor virginica Species h,j,k,l,arrows,drag to pan i,o,+,-,scroll,shift-drag to zoom r,dbl-click to reset c for coordinates ? for help ? -1.0 -0.5 0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0 6.5 7.0 7.5 -0.5 -0.4 -0.3 -0.2 -0.1 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 2.0 2.1 2.2 2.3 2.4 2.5 2.6 2.7 2.8 2.9 3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8 3.9 4.0 4.1 4.2 4.3 4.4 4.5 4.6 4.7 4.8 4.9 5.0 5.1 5.2 5.3 5.4 5.5 5.6 5.7 5.8 5.9 6.0 6.1 6.2 6.3 6.4 6.5 6.6 6.7 6.8 6.9 7.0 -2.5 0.0 2.5 5.0 7.5 -0.6 -0.4 -0.2 0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 2.2 2.4 2.6 2.8 3.0 3.2 3.4 3.6 3.8 4.0 4.2 4.4 4.6 4.8 5.0 5.2 5.4 5.6 5.8 6.0 6.2 6.4 6.6 6.8 7.0 SepalWidth This also takes a long time - hey I thought Julia was supposed to be fast?! . Ok yeah, so the first time you run a function Julia has to compile it. That depends on the types of the function arguments. .",
-            "url": "https://bwgroff.github.io/dspages/2020/12/28/First-Post.html",
-            "relUrl": "/2020/12/28/First-Post.html",
+            "url": "https://bwgroff.github.io/dspages/julia/basics/2020/12/28/First-Post.html",
+            "relUrl": "/julia/basics/2020/12/28/First-Post.html",
+            "date": " • Dec 28, 2020"
+        }
+        
+    
+  
+    
+        ,"post1": {
+            "title": "Building an Environment",
+            "content": "",
+            "url": "https://bwgroff.github.io/dspages/julia/rl/2020/12/28/Building-an-Environment.html",
+            "relUrl": "/julia/rl/2020/12/28/Building-an-Environment.html",
+            "date": " • Dec 28, 2020"
+        }
+        
+    
+  
+    
+        ,"post2": {
+            "title": "Title",
+            "content": "",
+            "url": "https://bwgroff.github.io/dspages/2020/12/28/A-Simple-Agent.html",
+            "relUrl": "/2020/12/28/A-Simple-Agent.html",
             "date": " • Dec 28, 2020"
         }
         
