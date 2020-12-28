@@ -67,13 +67,35 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home"><p>This site is built with <a href="https://github.com/fastai/fastpages">fastpages</a>, An easy to use blogging platform with extra features for Jupyter Notebooks.</p>
+        <div class="home"><h1 id="julia">Julia</h1>
 
-<p><img src="/dspages/images/diagram.png" alt="" title="https://github.com/fastai/fastpages" /></p>
+<p>I was introduced to Julia by Kelly Shen, an active member of the Julia community, fantastic data engineer and overall wonderful person. Since then, I’ve been consistently impressed and surprised at what’s available within the young ecosystem and becoming convinced that Julia will have a seat at the table alongside Python and R as a premier scripting language for data science and analytics.</p>
 
-<p><a href="https://github.com/fastai/fastpages">fastpages</a> automates the process of creating blog posts via GitHub Actions, so you don’t have to fuss with conversion scripts.  A full list of features can be found on <a href="https://github.com/fastai/fastpages">GitHub</a>.</p>
+<p>Julia has some rough spots for newcomers, especially the slow import statements and first-run times for functions. Julia compiles functions as needed, and this is type-specific (so a function <code class="language-plaintext highlighter-rouge">foo(Int)</code> and <code class="language-plaintext highlighter-rouge">foo(Float)</code> might both need to be compiled when they’re separately called, despite having the same name). There are ways around this (sometimes) including compiling your own system image (PackageCompiler.jl). That said, every subsequent invocation is <em>blazingly fast</em>.</p>
 
-<p>You can edit the <code class="language-plaintext highlighter-rouge">index.html</code> file to change this content.</p>
+<p>My favorite examples are iterating on visualizations with e.g. Gadfly, and iterating on models with Turing. In both cases, iteration is a critical aspect of the workflow and here Julia excels. Rendering a new plot or sampling from a new model is much faster than e.g. ggplot or matplotlib, or stan (which must recompile (slowly) every model change before sampling). I don’t do much pymc so can’t say much about speed there. The reduction in friction is a huge improvement.</p>
+
+<p>Other than that, Julia has it’s normal share of new syntax to grok and minor surprises to uncover. After a few weeks of doing a few minor tasks with it here and there, I’m very comfortable with it and find the language really wonderful.</p>
+
+<h1 id="so-whats-all-this-then">So what’s all this then?</h1>
+
+<p>After stepping away from work at the end of the year to recover from some 2020-burnout and focus on my family a bit, I also wanted to get closer to some of the new tools of the trade in data science. A lot of amazing stuff has emerged over the past several years as my career has focused more on management. Now is my chance to spend some time digging in and renewing my connection to the technical details of the field.</p>
+
+<p>While I’m at it, I might a well write about what I’m doing! So, the areas I plan on focusing are:</p>
+
+<ol>
+  <li>The basic tools for data science in Julia
+    <ol>
+      <li>CSV, HTTP, that sort of thing</li>
+      <li>Dataframes and DataframesMeta and so forth</li>
+      <li>Gadfly, Plots, yadda yadda etc</li>
+    </ol>
+  </li>
+  <li>Statistical modeling with Turing, Distributions, what have you</li>
+  <li>Reinforcement learning and the like</li>
+</ol>
+
+<p>Note that this site is built with <a href="https://github.com/fastai/fastpages">fastpages</a>, which is amaze.</p>
 
 <h1 id="posts">Posts</h1>
 
