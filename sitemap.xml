@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://bwgroff.github.io/dspages/2020/12/28/A-Simple-Agent.html</loc>
+<loc>https://bwgroff.github.io/dspages/julia/reinforcementlearning/2020/12/28/A-Simple-Agent.html</loc>
 <lastmod>2020-12-28T00:00:00-06:00</lastmod>
 </url>
 <url>
-<loc>https://bwgroff.github.io/dspages/julia/rl/2020/12/28/Building-an-Environment.html</loc>
+<loc>https://bwgroff.github.io/dspages/julia/reinforcementlearning/2020/12/28/Building-an-Environment.html</loc>
 <lastmod>2020-12-28T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>https://bwgroff.github.io/dspages/julia/basics/2020/12/28/First-Post.html</loc>
 <lastmod>2020-12-28T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>https://bwgroff.github.io/dspages/julia/fastai/2020/12/28/fastai-with-julia.html</loc>
+<lastmod>2020-12-28T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>https://bwgroff.github.io/dspages/julia/turing/2020/12/30/Turing-examples.html</loc>
+<lastmod>2020-12-30T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>https://bwgroff.github.io/dspages/about/</loc>
