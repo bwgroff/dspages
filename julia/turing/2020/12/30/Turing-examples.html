@@ -7444,7 +7444,7 @@ fig.select("#img-34227834-401")
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="n">heads</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">long_data</span><span class="p">)</span>
 <span class="n">flips</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">long_data</span><span class="p">)</span>
-<span class="nd">@time</span> <span class="n">sample</span><span class="p">(</span><span class="n">coinflip_binomial</span><span class="p">(</span><span class="n">heads</span><span class="p">,</span> <span class="n">flips</span><span class="p">),</span> <span class="n">HMC</span><span class="p">(</span><span class="n">ϵ</span><span class="p">,</span> <span class="n">τ</span><span class="p">),</span> <span class="n">iterations</span><span class="p">);</span>
+<span class="nd">@time</span> <span class="n">sample</span><span class="p">(</span><span class="n">coinflip_binomial</span><span class="p">(</span><span class="n">heads</span><span class="p">,</span> <span class="n">flips</span><span class="p">),</span> <span class="n">HMC</span><span class="p">(</span><span class="n">ϵ</span><span class="p">,</span> <span class="n">τ</span><span class="p">),</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">false</span><span class="p">);</span>
 </pre></div>
 
     </div>
