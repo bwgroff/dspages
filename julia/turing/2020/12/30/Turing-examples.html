@@ -148,20 +148,20 @@ window.onload = wrap_img;
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>To get myself comfortable with Julia and <code>Turing.jl</code>, I wrote out a bunch of toy models on the simplest of datasets: a simple vector of binary outcomes. To keep myself honest and to have something to refer to, I'm reproducing them here.</p>
 <h2 id="The-Models">The Models<a class="anchor-link" href="#The-Models"> </a></h2><h3 id="Standard-Biased-Coin-Estimation">Standard Biased Coin Estimation<a class="anchor-link" href="#Standard-Biased-Coin-Estimation"> </a></h3><p>Coinflipping is a time honored introductory example for probability exercises, and for good reason. Readily interpretable, amenable to both analytical solutions and manual calculation. Nevermind that <a href="https://www.stat.berkeley.edu/~nolan/Papers/dice.pdf">"unfair" coins are essentially impossible to make</a>...</p>
 <p>We'll build two models that are essentially the same but have distinct computational profiles. Bernoulli:</p>
-$$\begin{eqnarray}
-\beta &amp;\sim&amp; \mathrm{Beta}(1,1)\\
-y_i &amp;\sim&amp; \mathrm{Bernoulli}(\beta)\\
-\end{eqnarray}$$<p>And Binomial:</p>
-$$\begin{eqnarray}
-\beta &amp;\sim&amp; \mathrm{Beta}(1,1)\\
-\mathrm{sum}(y) &amp;\sim&amp; \mathrm{Binomial}(\mathrm{length}(y), \beta)\\
-\end{eqnarray}$$<h3 id="Incorporating-Prior-Knowledge">Incorporating Prior Knowledge<a class="anchor-link" href="#Incorporating-Prior-Knowledge"> </a></h3><p>The above are interesting in that both depend on the magical constants in the Beta distribution (in this case, all 1s). Personally, I'd need to see a lot of data to accept that a coin had a substantial bias, so in this section we explore the effect of modifying our prior distribution (the parameters of Beta, in this case).</p>
+$$\begin{align}
+\beta &amp;\sim \mathrm{Beta}(1,1)\\
+y_i &amp;\sim \mathrm{Bernoulli}(\beta)\\
+\end{align}$$<p>And Binomial:</p>
+$$\begin{align}
+\beta &amp;\sim \mathrm{Beta}(1,1)\\
+\mathrm{sum}(y) &amp;\sim \mathrm{Binomial}(\mathrm{length}(y), \beta)\\
+\end{align}$$<h3 id="Incorporating-Prior-Knowledge">Incorporating Prior Knowledge<a class="anchor-link" href="#Incorporating-Prior-Knowledge"> </a></h3><p>The above are interesting in that both depend on the magical constants in the Beta distribution (in this case, all 1s). Personally, I'd need to see a lot of data to accept that a coin had a substantial bias, so in this section we explore the effect of modifying our prior distribution (the parameters of Beta, in this case).</p>
 <h3 id="Sequential-Dependencies">Sequential Dependencies<a class="anchor-link" href="#Sequential-Dependencies"> </a></h3><p>The preceeding examples are about as far as coin flipping can take us, so we begin exploring dats that has more interesting structure. The first wrinkle we'll build in is removing the independence between subsequent data elements. This is cheating a little bit, since we're no longer strictly dealing with binary data as we are also incorporating the order of the elements but this lives in the realm of prior knowledge in my opinion: we believe a priori that the sort order of the data we received is equal to the temporal order of the data as it was generated.</p>
-$$\begin{eqnarray}
-\beta_0 &amp;\sim&amp; \mathrm{Beta}(1,1)\\
-\beta_1 &amp;\sim&amp; \mathrm{Beta}(1,1)\\
-y_i &amp;\sim&amp; \begin{cases} \mathrm{Bernoulli}(\beta_0) &amp; y_{i-1} = 0 \\ \mathrm{Bernoulli}(\beta_1) &amp; y_{i-1} = 1 \end{cases}
-\end{eqnarray}$$<h3 id="More-Complicated-Data-Generation-Processes">More Complicated Data Generation Processes<a class="anchor-link" href="#More-Complicated-Data-Generation-Processes"> </a></h3>
+$$\begin{align}
+\beta_0 &amp;\sim \mathrm{Beta}(1,1)\\
+\beta_1 &amp;\sim \mathrm{Beta}(1,1)\\
+y_i &amp;\sim \begin{cases} \mathrm{Bernoulli}(\beta_0) &amp; y_{i-1} = 0 \\ \mathrm{Bernoulli}(\beta_1) &amp; y_{i-1} = 1 \end{cases}
+\end{align}$$<h3 id="More-Complicated-Data-Generation-Processes">More Complicated Data Generation Processes<a class="anchor-link" href="#More-Complicated-Data-Generation-Processes"> </a></h3>
 </div>
 </div>
 </div>
