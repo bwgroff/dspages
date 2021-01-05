@@ -4,18 +4,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>B Groff | Back to basics.</title>
+<title>Item Response | B Groff</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="B Groff" />
+<meta property="og:title" content="Item Response" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Back to basics." />
 <meta property="og:description" content="Back to basics." />
-<link rel="canonical" href="https://bwgroff.github.io/dspages/" />
-<meta property="og:url" content="https://bwgroff.github.io/dspages/" />
+<link rel="canonical" href="https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html" />
+<meta property="og:url" content="https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html" />
 <meta property="og:site_name" content="B Groff" />
-<meta property="og:image" content="https://bwgroff.github.io/dspages/images/logo.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-05T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://bwgroff.github.io/dspages/","@type":"WebSite","headline":"B Groff","image":"https://bwgroff.github.io/dspages/images/logo.png","name":"B Groff","description":"Back to basics.","@context":"https://schema.org"}</script>
+{"url":"https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html","@type":"BlogPosting","headline":"Item Response","dateModified":"2021-01-05T00:00:00-06:00","datePublished":"2021-01-05T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html"},"description":"Back to basics.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/dspages/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bwgroff.github.io/dspages/feed.xml" title="B Groff" /><link rel="shortcut icon" type="image/x-icon" href="/dspages/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
@@ -83,73 +84,113 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home"><h1 id="julia">Julia</h1>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-<p>I was introduced to Julia by Kelly Shen, an active member of the Julia community, fantastic data engineer and overall wonderful person. Since then, I’ve been consistently impressed and surprised at what’s available within the young ecosystem and becoming convinced that Julia will have a seat at the table alongside Python and R as a premier scripting language for data science and analytics.</p>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Item Response</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-05T00:00:00-06:00" itemprop="datePublished">
+        Jan 5, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      1 min read
+    
+</span></p>
 
-<p>Julia has some rough spots for newcomers, especially the slow import statements and first-run times for functions. Julia compiles functions as needed, and this is type-specific (so a function <code class="language-plaintext highlighter-rouge">foo(Int)</code> and <code class="language-plaintext highlighter-rouge">foo(Float)</code> might both need to be compiled when they’re separately called, despite having the same name). There are ways around this (sometimes) including compiling your own system image (PackageCompiler.jl). That said, every subsequent invocation is <em>blazingly fast</em>.</p>
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/dspages/categories/#Julia">Julia</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/dspages/categories/#Turing">Turing</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/dspages/categories/#ItemResponse">ItemResponse</a>
+        
+      
+      </p>
+    
 
-<p>My favorite examples are iterating on visualizations with e.g. Gadfly, and iterating on models with Turing. In both cases, iteration is a critical aspect of the workflow and here Julia excels. Rendering a new plot or sampling from a new model is much faster than e.g. ggplot or matplotlib, or stan (which must recompile (slowly) every model change before sampling). I don’t do much pymc so can’t say much about speed there. The reduction in friction is a huge improvement.</p>
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
 
-<p>Other than that, Julia has it’s normal share of new syntax to grok and minor surprises to uncover. After a few weeks of doing a few minor tasks with it here and there, I’m very comfortable with it and find the language really wonderful.</p>
-
-<h1 id="so-whats-all-this-then">So what’s all this then?</h1>
-
-<p>After stepping away from work at the end of the year to recover from some 2020-burnout and focus on my family a bit, I also wanted to get closer to some of the new tools of the trade in data science. A lot of amazing stuff has emerged over the past several years as my career has focused more on management. Now is my chance to spend some time digging in and renewing my connection to the technical details of the field.</p>
-
-<p>While I’m at it, I might a well write about what I’m doing! So, the areas I plan on focusing are:</p>
-
-<ol>
-  <li>The basic tools for data science in Julia - reading, manipulating, visualizing data</li>
-  <li>Statistical modeling with Turing, Distributions, what have you</li>
-  <li>Reinforcement learning and the like</li>
-</ol>
-
-<p>Note that this site is built with <a href="https://github.com/fastai/fastpages">fastpages</a>, which is amaze.</p>
-
-<h1 id="posts">Posts</h1>
-
-
-
-  
-
-  <!-- Hide posts if front matter flag hide:true -->
-  
-  
-
-  <!-- Sort posts by rank, then date -->
-  
-  
-  
-
- 
-  
-
-   <!-- Assemble final sorted posts array -->
-  
-  <ul class="post-list"><li><h3>
-    <a class="post-link" href="/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html">
-    Item Response
+    <a href="https://github.com/bwgroff/dspages/tree/master/_notebooks/2021-01-05-Item-Response-I.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/dspages/assets/badges/github.svg" alt="View On GitHub">
     </a>
-</h3><p class="post-meta">Jan 5, 2021</p>
-</li><li><h3>
-    <a class="post-link" href="/dspages/julia/turing/churn/survival/ltv/2021/01/05/Buy-Til-You_Die.html">
-    Customer LTV - Buy til You Die
-    </a>
-</h3><p class="post-meta">Jan 5, 2021</p>
-</li><li><h3>
-    <a class="post-link" href="/dspages/julia/turing/binary/2021/01/03/Turing-Examples-2.html">
-    Some More Models on Binary Data
-    </a>
-</h3><p class="post-meta">Jan 3, 2021</p>
-</li><li><h3>
-    <a class="post-link" href="/dspages/julia/turing/binary/2020/12/30/Turing-Examples-1.html">
-    Some Simple Models on Binary Data
-    </a>
-</h3><p class="post-meta">Dec 30, 2020</p>
-</li></ul>
+</div>
+
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-05-Item-Response-I.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p><div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="k">using</span> <span class="n">Turing</span>
+<span class="k">using</span> <span class="n">Bijectors</span>
+<span class="k">using</span> <span class="n">Gadfly</span>
+<span class="k">using</span> <span class="n">DataFrames</span><span class="p">,</span> <span class="n">DataFramesMeta</span>
+<span class="n">Gadfly</span><span class="o">.</span><span class="n">set_default_plot_size</span><span class="p">(</span><span class="mi">900</span><span class="n">px</span><span class="p">,</span> <span class="mi">300</span><span class="n">px</span><span class="p">)</span>
+</pre></div>
 
     </div>
+</div>
+</div>
+</p>
+    </details>
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Item response models are used to simultaneously make inferences about two interacting populations. Commonly, a population of test questions and a population of test takers (students) with the result (success/failure) of each student on each question they've seen. This is an interesting problem in that even in the basic case:</p>
+<ul>
+<li>students have different levels of competence</li>
+<li>questions have different levels of difficulty</li>
+<li>not every student sees every question</li>
+<li>not every question needs to be seen by the same number of students</li>
+<li>we should be able to make relative inferences between students/questions that have no overlapping questions/students</li>
+<li>the data is nonetheless fairly simple: <code>[correct (Boolean), student_id (categorical), question_id (categorical]</code></li>
+</ul>
+<p>Item Response is very similar to collaborative filtering, albeit typically a different approach and different intent. Collaborative filtering is often done at scale using <a href="https://spark.apache.org/docs/2.2.0/ml-collaborative-filtering.html">alternating least squares (ALS) e.g. in Spark</a>.</p>
+<p>In both cases, the problem can be case as</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://mc-stan.org/docs/2_18/stan-users-guide/item-response-models-section.html">Stan users guide - IRT</a></p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html" hidden></a>
+</article>
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/dspages/"></data>
