@@ -4,9 +4,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Item Response | B Groff</title>
+<title>Item Response Models | B Groff</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Item Response" />
+<meta property="og:title" content="Item Response Models" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Back to basics." />
 <meta property="og:description" content="Back to basics." />
@@ -16,7 +16,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-01-05T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html","@type":"BlogPosting","headline":"Item Response","dateModified":"2021-01-05T00:00:00-06:00","datePublished":"2021-01-05T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html"},"description":"Back to basics.","@context":"https://schema.org"}</script>
+{"url":"https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html","@type":"BlogPosting","headline":"Item Response Models","dateModified":"2021-01-05T00:00:00-06:00","datePublished":"2021-01-05T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bwgroff.github.io/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html"},"description":"Back to basics.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/dspages/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bwgroff.github.io/dspages/feed.xml" title="B Groff" /><link rel="shortcut icon" type="image/x-icon" href="/dspages/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
@@ -69,25 +69,30 @@ window.onload = wrap_img;
 </head>
 <body><header class="site-header">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/dspages/">B Groff</a><nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/dspages/">B Groff</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
         <label for="nav-trigger">
           <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
             </svg>
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/dspages/about/">About Me</a><a class="page-link" href="/dspages/search/">Search</a><a class="page-link" href="/dspages/categories/">Tags</a></div>
-      </nav></div>
+        <div class="trigger">
+<a class="page-link" href="/dspages/about/">About Me</a><a class="page-link" href="/dspages/search/">Search</a><a class="page-link" href="/dspages/categories/">Tags</a>
+</div>
+      </nav>
+</div>
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Item Response</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-05T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Item Response Models</h1>
+<p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-05T00:00:00-06:00" itemprop="datePublished">
         Jan 5, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -98,13 +103,13 @@ window.onload = wrap_img;
 </span></p>
 
     
-      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i> 
       
         <a class="category-tags-link" href="/dspages/categories/#Julia">Julia</a>
-        &nbsp;
+         
       
         <a class="category-tags-link" href="/dspages/categories/#Turing">Turing</a>
-        &nbsp;
+         
       
         <a class="category-tags-link" href="/dspages/categories/#ItemResponse">ItemResponse</a>
         
@@ -142,7 +147,8 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing code_cell rendered">
 <details class="description">
       <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
-        <p><div class="input">
+        <p></p>
+<div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
@@ -156,29 +162,34 @@ window.onload = wrap_img;
     </div>
 </div>
 </div>
-</p>
+
     </details>
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Item response models are used to simultaneously make inferences about two interacting populations. Commonly, a population of test questions and a population of test takers (students) with the result (success/failure) of each student on each question they've seen. This is an interesting problem in that even in the basic case:</p>
 <ul>
-<li>students have different levels of competence</li>
+<li>students have different levels of aptitude</li>
 <li>questions have different levels of difficulty</li>
 <li>not every student sees every question</li>
 <li>not every question needs to be seen by the same number of students</li>
 <li>we should be able to make relative inferences between students/questions that have no overlapping questions/students</li>
-<li>the data is nonetheless fairly simple: <code>[correct (Boolean), student_id (categorical), question_id (categorical]</code></li>
+<li>the data is nonetheless fairly simple: <code>[correct (Boolean), student_id (categorical), question_id (categorical]</code>
+</li>
 </ul>
-<p>Item Response is very similar to collaborative filtering, albeit typically a different approach and different intent. Collaborative filtering is often done at scale using <a href="https://spark.apache.org/docs/2.2.0/ml-collaborative-filtering.html">alternating least squares (ALS) e.g. in Spark</a>.</p>
-<p>In both cases, the problem can be case as</p>
+<p>Item Response may seem very similar to collaborative filtering, so it's worth disambiguating.</p>
+<p>Collaborative filtering aims to complete a sparsely determined preferences/ratings matrix of consumer - item scores (e.g. "3.5 <img class="emoji" title=":star:" alt=":star:" src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png" height="20" width="20">") $M$. A common approach is alternating least squares which iteratively factors the matrix into a product-feature matrix $P$ and a customer-preference matrix $C$. The goal is to create these so that their product "accurately completes" $M$, ie if $CP = \overline{M}$ then the difference $M - \overline{M}$ is small wherever we have entries for $M$ (remember, $M$ is incomplete).</p>
+<p>A key fact is that the matrix $\overline{M}$ (the list of recommendations) is the important output here, and the factors $C$ and $P$ are intriguing but not critical. This is different from Item Response where the background variables describing difficulty and aptitude for each question, student are the primary desired outputs (but we could infer $P(\mathrm{correct} | \mathrm{student_id}, \mathrm{question_id})$ for unseen pairings!).</p>
+<p>The other distinction worth mentioning is that the IR models have enormous flexibility in how they inform the probability of success, as we'll see. Collaborative filtering, at least with ALS, is just optimizing a matrix factorization task. Since $\overline{M} = CP$, the user-product score can only be the dot product of the product-feature vector and the customer-preference vector, it attempts to encode "how well do the consumer preferences overlap with the product features."</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="https://mc-stan.org/docs/2_18/stan-users-guide/item-response-models-section.html">Stan users guide - IRT</a></p>
 
@@ -189,7 +200,8 @@ window.onload = wrap_img;
 
 
 
-  </div><a class="u-url" href="/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html" hidden></a>
+  </div>
+<a class="u-url" href="/dspages/julia/turing/itemresponse/2021/01/05/Item-Response-I.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
@@ -212,7 +224,8 @@ window.onload = wrap_img;
       </div>
     </div>
 
-    <div class="social-links"><ul class="social-media-list"></ul>
+    <div class="social-links">
+<ul class="social-media-list"></ul>
 </div>
 
   </div>
