@@ -1,1 +1,1 @@
-Sitemap: https://bwgroff.github.io/dspages/sitemap.xml
+Sitemap: http://bwg.is/sitemap.xml
