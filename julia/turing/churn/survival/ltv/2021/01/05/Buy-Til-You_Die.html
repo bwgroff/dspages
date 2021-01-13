@@ -98,7 +98,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      5 min read
+      6 min read
     
 </span></p>
 
@@ -207,7 +207,7 @@ $$P(\mathrm{purchase\ in\ next\ period}|\mathcal{D})$$<p></p>
 <li>Set up a super simple survival model to understand the expected number of future purchases using sample from (1) as the churn signal.</li>
 <li>Scale by <strong>M</strong>onetary value.</li>
 </ol>
-<p>One value of building these out independently this way is that they can be understood component-by-component.</p>
+<p>By building these out independently we can understood the whole model but first figuring it out component-by-component. It also provides a quick way to make single-component adjustments that might be important. For instance, some retailers have an extremely wide spread of possible order values (e.g. Walmart, you can buy a stick of gum or probably a boat or something). If there are orders-of-magnitude differences in purchase value then you better model that out so you know exactly which consumers are likely to find themselves that lucrative long tail. In my experience, lognormal is a decent start but the tail is still too light.</p>
 
 </div>
 </div>
@@ -219,32 +219,35 @@ $$P(\mathrm{purchase\ in\ next\ period}|\mathcal{D})$$<p></p>
 </h2>
 <h4 id="Churn">Churn<a class="anchor-link" href="#Churn"> </a>
 </h4>
-<p>We sample when we expect the customer's next purchase to occur based on what we've observed of their frequency, then we compare that to how long it's been since they purchased. If we expected them to purchase already, we count them as churned.</p>
+<p>We sample when we expect the customer's next purchase to occur based on what we've observed of their frequency, then we compare that to how long it's been since they purchased. If we expected them to purchase already, we count them as churned. Note that we don't have any kind of regularization and just assume F is a fine number for us. Exercise for the reader to make that more stable <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20">.</p>
 $$
 \begin{aligned}
 \mathrm{next\ purchase} &amp;\sim \mathrm{Exponential}(F) \\
-\mathrm{alive} &amp;= R &lt; \mathrm{next\ purchase}
+\mathrm{active} &amp;= R &lt; \mathrm{next\ purchase}
 \end{aligned}
 $$<h4 id="Survival">Survival<a class="anchor-link" href="#Survival"> </a>
 </h4>
 <p>We'd like to then take the inferences above and use them to understand churn as a function of time, or perhaps number of orders. In other words:</p>
 <p>
-$$P(\neg \mathrm{alive}_{t=i} | \mathrm{alive}_{t=i-1})$$
+$$P(\mathrm{churned}_{t=i} | \mathrm{active}_{t=i-1})$$
 </p>
 <p>Here we find some wrinkles. Most notably, what to do with consumers that have recently purchased and we don't know if they are going to churn before the next purchase? This is called censoring, which comes in many directional varieties and this variety is called right-censoring (on the "right" side of our time interval, we don't yet have data on the outcome).</p>
 $$
 \begin{aligned}
-\rho(F) &amp;= f(\mathrm{alive, F})\\
+\rho &amp;\sim \mathrm{Beta}(1,1)\\
+\mathrm{purchases}_{uncensored} &amp;\sim \mathrm{Geometric(\rho)}\\
+\mathrm{purchases}_{censored} &amp;\sim \mathrm{Geometric(\rho ?)}\\
 (\mathrm{Future\ purchases}) &amp;\sim 
     \begin{cases}
-    \mathrm{Geometric}(\rho(F)) &amp; \mathrm{if\ alive} \\
+    \mathrm{Geometric}(\rho) &amp; \mathrm{if\ active} \\
     \mathrm{Dirac}(0) &amp; \mathrm{otherwise}
     \end{cases}
 \end{aligned}
 $$<h4 id="LTV">LTV<a class="anchor-link" href="#LTV"> </a>
 </h4>$$
 \begin{aligned}
-(\mathrm{Future\ value}) &amp;= (\mathrm{Future\ purchases}) * \mathrm{AOV}
+\mathrm{Future\ value} &amp;= \mathrm{Future\ purchases} * \mathrm{AOV}\\
+\mathrm{Lifetime\ value} &amp;= \mathrm{Future\ value} + \mathrm{Past\ value}
 \end{aligned}
 $$
 </div>
@@ -287,23 +290,23 @@ $$
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">struct</span> <span class="n">LtvGQs</span>
-    <span class="n">alive</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}</span>
+    <span class="n">active</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}</span>
 <span class="k">end</span>
 
 
 <span class="nd">@model</span> <span class="k">function</span> <span class="n">btyd</span><span class="p">(</span><span class="n">custs</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="n">CustomerData</span><span class="p">})</span>
     <span class="c"># Sub-model for churn</span>
-    <span class="n">alive</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}(</span><span class="n">undef</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">))</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}(</span><span class="n">undef</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">))</span>
     <span class="n">future_purchases</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">(</span><span class="n">undef</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">))</span>
     <span class="n">days_to_next_predicted_purchase</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">(</span><span class="n">undef</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">)</span>
         <span class="n">days_to_next_predicted_purchase</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span> <span class="n">Exponential</span><span class="p">(</span><span class="n">custs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">frequency</span><span class="p">)</span> 
-        <span class="n">alive</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">days_to_next_predicted_purchase</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">custs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">recency</span>
-<span class="c">#        future_purchases[i] ~ Normal(alive[i], .1) # 1/custs[i].frequency)</span>
+        <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">days_to_next_predicted_purchase</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">custs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">recency</span>
+<span class="c">#        future_purchases[i] ~ Normal(active[i], .1) # 1/custs[i].frequency)</span>
     <span class="k">end</span>
     
     <span class="c"># Sub-model for survival analysis</span>
-    <span class="k">return</span> <span class="n">alive</span><span class="p">,</span> <span class="n">alive2</span>
+    <span class="k">return</span> <span class="n">active</span><span class="p">,</span> <span class="n">active2</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -837,6 +840,9 @@ Quantiles
     
     
 <div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
 <div class="input">
 
 <div class="inner_cell">
@@ -848,6 +854,23 @@ Quantiles
 </pre></div>
 
     </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Plot(...)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
