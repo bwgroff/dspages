@@ -18,7 +18,13 @@
 <script type="application/ld+json">
 {"url":"https://www.bwg.is/julia/turing/churn/survival/ltv/2021/01/14/LTV.html","@type":"BlogPosting","headline":"Customer LTV","dateModified":"2021-01-14T00:00:00-06:00","datePublished":"2021-01-14T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.bwg.is/julia/turing/churn/survival/ltv/2021/01/14/LTV.html"},"description":"Hi there!","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://www.bwg.is/feed.xml" title="Brad Groff" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://www.bwg.is/feed.xml" title="Brad Groff" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','G-L1RGTQP9ST','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
@@ -219,13 +225,14 @@ $$P(\mathrm{purchase\ in\ next\ period}|\mathcal{D})$$<p></p>
 </h2>
 <h3 id="Active-from-RF">Active from RF<a class="anchor-link" href="#Active-from-RF"> </a>
 </h3>
-<p>We sample when we expect the customer's next purchase to occur based on what we've observed of their frequency, then we compare that to how long it's been since they purchased. If we expected them to purchase already, we count them as churned. Note that we don't have any kind of regularization and just assume F is a fine number for us. Exercise for the reader to make that more stable <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20">.</p>
+<p>We sample when we expect the customer's next purchase to occur based on what we've observed of their frequency, then we compare that to how long it's been since they purchased. If we expected them to have purchased already but they haven't then we count them as churned.</p>
 $$
 \begin{aligned}
 \mathrm{next\ purchase} &amp;\sim \mathrm{Exponential}(F) \\
 \mathrm{active} &amp;= R &lt; \mathrm{next\ purchase}
 \end{aligned}
-$$<h3 id="Future-Purchases-from-RF+Active">Future Purchases from RF+Active<a class="anchor-link" href="#Future-Purchases-from-RF+Active"> </a>
+$$<p>Note that we don't have any kind of regularization and just assume F is a fine number for us. Exercise for the reader to make that more stable <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20">.</p>
+<h3 id="Future-Purchases-from-RF+Active">Future Purchases from RF+Active<a class="anchor-link" href="#Future-Purchases-from-RF+Active"> </a>
 </h3>
 <p>We'd like to then take the inferences above and use them to understand churn as a function of time, or perhaps number of orders. In other words:</p>
 <p>
@@ -284,20 +291,46 @@ $$\widehat {S}(t)=\prod \limits _{i:\ t_{i}\leq t}\left(1-{\frac {d_{i}}{n_{i}}}
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span></span><span class="k">struct</span> <span class="n">CustomerData</span>
-    <span class="n">recency_lag</span><span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">frequency</span><span class="o">::</span><span class="kt">Float64</span>
-    <span class="n">period</span><span class="o">::</span><span class="kt">Float64</span>
+    <span class="n">days_since_last_purchase</span><span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">days_since_first_purchase</span><span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">total_purchases</span><span class="o">::</span><span class="kt">Int64</span>
     <span class="n">monetary_value</span><span class="o">::</span><span class="kt">Float64</span>
 <span class="k">end</span>
 
 <span class="k">struct</span> <span class="n">RFM</span>
+    <span class="n">raw</span><span class="o">::</span><span class="n">CustomerData</span>
     <span class="n">recency</span><span class="o">::</span><span class="kt">Int64</span>
     <span class="n">frequency</span><span class="o">::</span><span class="kt">Float64</span>
     <span class="n">monetary_value</span><span class="o">::</span><span class="kt">Float64</span>
 <span class="k">end</span>
+
+<span class="k">function</span> <span class="n">rfm</span><span class="p">(</span><span class="n">c</span><span class="o">::</span><span class="n">CustomerData</span><span class="p">)</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">days_since_first_purchase</span> <span class="o">-</span> <span class="n">c</span><span class="o">.</span><span class="n">days_since_last_purchase</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">total_purchases</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">rfm</span> <span class="o">=</span> <span class="n">RFM</span><span class="p">(</span>
+        <span class="n">c</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">days_since_last_purchase</span><span class="p">,</span>
+        <span class="mi">1</span> <span class="o">/</span> <span class="n">period</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">monetary_value</span><span class="p">)</span>
+<span class="k">end</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>rfm (generic function with 1 method)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -311,14 +344,14 @@ $$\widehat {S}(t)=\prod \limits _{i:\ t_{i}\leq t}\left(1-{\frac {d_{i}}{n_{i}}}
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">cust_data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
-    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
-    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
-    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
-    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
-    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
-<span class="p">];</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">rfm_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">rfm</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="kp">in</span> <span class="p">[</span>
+    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span>   <span class="mi">60</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>   
+    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">305</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
+    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">53</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>    <span class="c"># definitely churned!</span>
+    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span>   <span class="mi">29</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
+    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>
+    <span class="n">CustomerData</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">222</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">123</span><span class="p">),</span>    <span class="c"># probably churned..</span>
+<span class="p">]];</span>
 </pre></div>
 
     </div>
@@ -343,36 +376,20 @@ $$\widehat {S}(t)=\prod \limits _{i:\ t_{i}\leq t}\left(1-{\frac {d_{i}}{n_{i}}}
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="nd">@model</span> <span class="k">function</span> <span class="n">active</span><span class="p">(</span><span class="n">custs</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="n">CustomerData</span><span class="p">})</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="nd">@model</span> <span class="k">function</span> <span class="n">active</span><span class="p">(</span><span class="n">custs</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="n">RFM</span><span class="p">})</span>
     <span class="n">predicted_purchase_days</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">(</span><span class="n">undef</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">))</span>
     <span class="n">active</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}(</span><span class="n">undef</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">)</span>
-        <span class="n">predicted_purchase_days</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span> <span class="n">Exponential</span><span class="p">(</span><span class="n">custs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">frequency</span><span class="p">)</span> 
+        <span class="n">predicted_purchase_days</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span> <span class="n">Exponential</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">custs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">frequency</span><span class="p">)</span> 
         <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted_purchase_days</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">custs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">recency</span>
     <span class="k">end</span>
     
     <span class="k">return</span> <span class="n">active</span>
-<span class="k">end</span>
+<span class="k">end</span><span class="p">;</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>active (generic function with 1 method)</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -382,82 +399,39 @@ $$\widehat {S}(t)=\prod \limits _{i:\ t_{i}\leq t}\left(1-{\frac {d_{i}}{n_{i}}}
     
     
 <div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">iterations</span> <span class="o">=</span> <span class="mi">2000</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">iterations</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="n">τ</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 
 <span class="n">chain_ltv</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span>
-    <span class="n">active</span><span class="p">(</span><span class="n">cust_data</span><span class="p">),</span> 
+    <span class="n">active</span><span class="p">(</span><span class="n">rfm_data</span><span class="p">),</span> 
     <span class="n">HMC</span><span class="p">(</span><span class="n">ϵ</span><span class="p">,</span> <span class="n">τ</span><span class="p">),</span> <span class="n">iterations</span><span class="p">,</span> 
-    <span class="n">progress</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+    <span class="n">progress</span><span class="o">=</span><span class="kc">false</span><span class="p">,</span> <span class="n">drop_warmup</span><span class="o">=</span><span class="kc">true</span><span class="p">);</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-green-fg">Sampling: 100%|█████████████████████████████████████████| Time: 0:00:02</span>
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>Chains MCMC chain (2000×15×1 Array{Float64,3}):
-
-Iterations        = 1:2000
-Thinning interval = 1
-Chains            = 1
-Samples per chain = 2000
-parameters        = predicted_purchase_days[1], predicted_purchase_days[2], predicted_purchase_days[3], predicted_purchase_days[4], predicted_purchase_days[5], predicted_purchase_days[6]
-internals         = acceptance_rate, hamiltonian_energy, hamiltonian_energy_error, is_accept, log_density, lp, n_steps, nom_step_size, step_size
-
-Summary Statistics
- <span class="ansi-bold">                 parameters </span> <span class="ansi-bold">    mean </span> <span class="ansi-bold">     std </span> <span class="ansi-bold"> naive_se </span> <span class="ansi-bold">    mcse </span> <span class="ansi-bold">      e</span> ⋯
- <span class="ansi-black-intense-fg">                     Symbol </span> <span class="ansi-black-intense-fg"> Float64 </span> <span class="ansi-black-intense-fg"> Float64 </span> <span class="ansi-black-intense-fg">  Float64 </span> <span class="ansi-black-intense-fg"> Float64 </span> <span class="ansi-black-intense-fg">  Float</span> ⋯
-
-  predicted_purchase_days[1]    9.3736    9.5614     0.2138    0.7994   198.81 ⋯
-  predicted_purchase_days[2]    9.8823    9.6488     0.2158    0.7492   151.43 ⋯
-  predicted_purchase_days[3]   10.9717   10.6465     0.2381    0.7395   168.51 ⋯
-  predicted_purchase_days[4]    1.9534    1.9601     0.0438    0.1553   128.13 ⋯
-  predicted_purchase_days[5]    1.8112    1.8519     0.0414    0.1353   165.92 ⋯
-  predicted_purchase_days[6]    2.0249    2.0823     0.0466    0.1817   130.08 ⋯
-<span class="ansi-red-fg">                                                               2 columns omitted</span>
-
-Quantiles
- <span class="ansi-bold">                 parameters </span> <span class="ansi-bold">    2.5% </span> <span class="ansi-bold">   25.0% </span> <span class="ansi-bold">   50.0% </span> <span class="ansi-bold">   75.0% </span> <span class="ansi-bold">   97.5%</span> ⋯
- <span class="ansi-black-intense-fg">                     Symbol </span> <span class="ansi-black-intense-fg"> Float64 </span> <span class="ansi-black-intense-fg"> Float64 </span> <span class="ansi-black-intense-fg"> Float64 </span> <span class="ansi-black-intense-fg"> Float64 </span> <span class="ansi-black-intense-fg"> Float64</span> ⋯
-
-  predicted_purchase_days[1]    0.4989    2.9971    6.5270   12.3057   33.8535 ⋯
-  predicted_purchase_days[2]    0.3161    2.8526    7.0404   13.6432   35.3383 ⋯
-  predicted_purchase_days[3]    0.7023    3.7163    7.6839   14.8132   38.9750 ⋯
-  predicted_purchase_days[4]    0.0332    0.5434    1.4089    2.6586    7.2278 ⋯
-  predicted_purchase_days[5]    0.0408    0.4467    1.2543    2.5747    6.5168 ⋯
-  predicted_purchase_days[6]    0.0188    0.5065    1.4062    2.8350    7.4022 ⋯
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
+    </details>
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And how does this match up with our expectations?</p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -465,7 +439,8 @@ Quantiles
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">DataFrame</span><span class="p">(</span><span class="n">hcat</span><span class="p">(</span><span class="n">generated_quantities</span><span class="p">(</span><span class="n">active</span><span class="p">(</span><span class="n">cust_data</span><span class="p">),</span> <span class="n">chain_ltv</span><span class="p">)</span><span class="o">...</span><span class="p">)</span><span class="o">'</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">active_samples</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">hcat</span><span class="p">(</span><span class="n">generated_quantities</span><span class="p">(</span><span class="n">active</span><span class="p">(</span><span class="n">cust_data</span><span class="p">),</span> <span class="n">chain_ltv</span><span class="p">)</span><span class="o">...</span><span class="p">)</span><span class="o">'</span><span class="p">)</span>
+<span class="n">combine</span><span class="p">(</span><span class="n">active_samples</span><span class="p">,</span> <span class="o">:</span><span class="n">x1</span> <span class="o">=&gt;</span> <span class="n">mean</span><span class="p">,</span> <span class="o">:</span><span class="n">x2</span> <span class="o">=&gt;</span> <span class="n">mean</span><span class="p">,</span> <span class="o">:</span><span class="n">x3</span> <span class="o">=&gt;</span> <span class="n">mean</span><span class="p">,</span> <span class="o">:</span><span class="n">x4</span> <span class="o">=&gt;</span> <span class="n">mean</span><span class="p">,</span> <span class="o">:</span><span class="n">x5</span> <span class="o">=&gt;</span> <span class="n">mean</span><span class="p">,</span> <span class="o">:</span><span class="n">x6</span> <span class="o">=&gt;</span> <span class="n">mean</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -483,303 +458,33 @@ Quantiles
 <thead>
 <tr>
 <th></th>
-<th>x1</th>
-<th>x2</th>
-<th>x3</th>
-<th>x4</th>
-<th>x5</th>
-<th>x6</th>
+<th>x1_mean</th>
+<th>x2_mean</th>
+<th>x3_mean</th>
+<th>x4_mean</th>
+<th>x5_mean</th>
+<th>x6_mean</th>
 </tr>
 <tr>
 <th></th>
-<th>Bool</th>
-<th>Bool</th>
-<th>Bool</th>
-<th>Bool</th>
-<th>Bool</th>
-<th>Bool</th>
+<th>Float64</th>
+<th>Float64</th>
+<th>Float64</th>
+<th>Float64</th>
+<th>Float64</th>
+<th>Float64</th>
 </tr>
 </thead>
 <tbody>
-<p>2,000 rows × 6 columns</p>
+<p>1 rows × 6 columns</p>
 <tr>
 <th>1</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>2</th>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>3</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>4</th>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>5</th>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>6</th>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>7</th>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>8</th>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>9</th>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>10</th>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>11</th>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>12</th>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>13</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>14</th>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>15</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>16</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>17</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>18</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>19</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>20</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>21</th>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>22</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>23</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>24</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>25</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>26</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>27</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>28</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>29</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>30</th>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<th>&amp;vellip;</th>
-<td>&amp;vellip;</td>
-<td>&amp;vellip;</td>
-<td>&amp;vellip;</td>
-<td>&amp;vellip;</td>
-<td>&amp;vellip;</td>
-<td>&amp;vellip;</td>
+<td>0.846</td>
+<td>0.763</td>
+<td>0.0</td>
+<td>0.724</td>
+<td>0.718</td>
+<td>0.094</td>
 </tr>
 </tbody>
 </table>
@@ -787,6 +492,24 @@ Quantiles
 
 </div>
 
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span></span><span class="nd">@linq</span> <span class="n">active_samples</span> <span class="o">|&gt;</span> 
+    <span class="n">by</span><span class="p">(</span><span class="o">:</span><span class="n">b</span><span class="p">,</span> <span class="n">meanX</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="o">:</span><span class="n">x</span><span class="p">),</span> <span class="n">meanY</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="o">:</span><span class="n">y</span><span class="p">))</span> <span class="o">|&gt;</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
