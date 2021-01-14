@@ -1,1 +1,1 @@
-Sitemap: http://www.bwg.is/sitemap.xml
+Sitemap: https://www.bwg.is/sitemap.xml
