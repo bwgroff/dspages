@@ -104,7 +104,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      8 min read
+      9 min read
     
 </span></p>
 
@@ -876,7 +876,10 @@ $$
     <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">custs</span><span class="p">)</span>
         <span class="k">if</span> <span class="o">!</span><span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">total_purchases</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span> <span class="n">Exponential</span><span class="p">(</span><span class="n">churn_rate</span><span class="p">)</span>
-            <span class="n">future_purchases</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span> <span class="n">Exponential</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>
+            <span class="n">future_purchases</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span> <span class="n">Exponential</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>  
+            <span class="c"># Turing fails without this ^ because I lazily didn't declare a prior</span>
+            <span class="c"># and if not active the right answer is 0 so... </span>
+            <span class="c"># we'll clean it up in post ;)</span>
         <span class="k">else</span>
             <span class="n">future_purchases</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span> <span class="n">Exponential</span><span class="p">(</span><span class="n">churn_rate</span><span class="p">)</span>
         <span class="k">end</span>
