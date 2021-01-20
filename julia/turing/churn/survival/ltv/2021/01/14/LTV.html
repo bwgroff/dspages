@@ -305,7 +305,8 @@ $$
 <span class="k">end</span>
 
 <span class="k">function</span> <span class="n">rfm</span><span class="p">(</span><span class="n">c</span><span class="o">::</span><span class="n">CustomerData</span><span class="p">)</span>
-    <span class="n">period</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">days_since_first_purchase</span> <span class="o">-</span> <span class="n">c</span><span class="o">.</span><span class="n">days_since_last_purchase</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">total_purchases</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">active_days</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">days_since_first_purchase</span> <span class="o">-</span> <span class="n">c</span><span class="o">.</span><span class="n">days_since_last_purchase</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="p">(</span><span class="n">active_days</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">total_purchases</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c"># wcgw?</span>
     <span class="n">rfm</span> <span class="o">=</span> <span class="n">RFM</span><span class="p">(</span>
         <span class="n">c</span><span class="p">,</span>
         <span class="n">c</span><span class="o">.</span><span class="n">days_since_last_purchase</span><span class="p">,</span>
